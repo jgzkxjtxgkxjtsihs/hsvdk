@@ -1,0 +1,413 @@
+<html><head><base href="." /><title>Elegant Login Page</title><style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(45deg, #ffb6c1, #ffd1dc);
+    overflow: hidden;
+}
+
+.login-container {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    width: 90%;
+    max-width: 400px;
+    transform: translateY(0);
+    transition: transform 0.3s ease;
+    position: relative;
+    z-index: 2;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+    position: relative;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #ffb6c1;
+}
+
+.form-group label {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: white;
+    padding: 0 5px;
+    color: #666;
+    transition: all 0.3s ease;
+    pointer-events: none;
+}
+
+.form-group input:focus + label,
+.form-group input:not(:placeholder-shown) + label {
+    top: 0;
+    font-size: 0.8rem;
+    color: #ffb6c1;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(45deg, #ffb6c1, #ffd1dc);
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.submit-btn:hover {
+    transform: translateY(-2px);
+}
+
+.links {
+    margin-top: 1.5rem;
+    text-align: center;
+}
+
+.links a {
+    color: #ffb6c1;
+    text-decoration: none;
+    margin: 0 10px;
+    font-size: 0.9rem;
+}
+
+.links a:hover {
+    text-decoration: underline;
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+.floating-circles {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.circle {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    animation: float 6s infinite ease-in-out;
+}
+
+.smoke-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 200px;
+    z-index: 1;
+    overflow: hidden;
+}
+
+@keyframes smoke {
+    0% {
+        transform: translateY(0) scaleX(1) rotate(0deg);
+        opacity: 0;
+    }
+    20% {
+        opacity: 0.5;
+    }
+    40% {
+        transform: translateY(-100px) scaleX(1.5) rotate(45deg);
+        opacity: 0.4;
+    }
+    60% {
+        transform: translateY(-150px) scaleX(2) rotate(90deg);
+        opacity: 0.3;
+    }
+    80% {
+        transform: translateY(-200px) scaleX(2.5) rotate(135deg);
+        opacity: 0.2;
+    }
+    100% {
+        transform: translateY(-250px) scaleX(3) rotate(180deg);
+        opacity: 0;
+    }
+}
+
+.smoke-line {
+    position: absolute;
+    bottom: 0;
+    width: 2px;
+    height: 150px;
+    background: linear-gradient(to top, rgba(255, 182, 193, 0.8), transparent);
+    animation: smoke 5s infinite;
+}
+
+.ribbon {
+    position: fixed;
+    pointer-events: none;
+    z-index: 1;
+}
+
+@keyframes flyingRibbon {
+    0% {
+        transform: translate(-100vw, 100vh) rotate(0deg);
+        opacity: 0;
+    }
+    20% {
+        opacity: 0.8;
+    }
+    80% {
+        opacity: 0.8;
+    }
+    100% {
+        transform: translate(100vw, -100vh) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+.ribbon-path {
+    fill: none;
+    stroke: rgba(255, 182, 193, 0.3);
+    stroke-width: 3;
+    filter: drop-shadow(0 0 5px rgba(255, 182, 193, 0.5));
+    animation: flyingRibbon 15s linear infinite;
+}
+
+.happy-cat {
+    position: fixed;
+    bottom: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    transition: all 0.5s ease;
+    opacity: 0;
+    z-index: 10;
+}
+
+@keyframes catJump {
+    0% { transform: translateY(0) translateX(-50%) rotate(0deg); }
+    50% { transform: translateY(-100px) translateX(-50%) rotate(10deg); }
+    100% { transform: translateY(0) translateX(-50%) rotate(0deg); }
+}
+
+.happy-cat.show {
+    opacity: 1;
+    animation: catJump 1s infinite ease-in-out;
+}
+
+.congratulation-text {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2rem;
+    color: #ff69b4;
+    text-align: center;
+    opacity: 0;
+    z-index: 11;
+    transition: opacity 0.5s ease;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+
+.congratulation-text.show {
+    opacity: 1;
+}
+
+.confetti {
+    position: fixed;
+    z-index: 9;
+    pointer-events: none;
+}
+
+.confetti-piece {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: #ffd1dc;
+    top: -20px;
+    opacity: 0;
+}
+
+@keyframes confettiFall {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+</style></head><body>
+    <div class="floating-circles">
+        <div class="circle" style="width: 100px; height: 100px; top: 10%; left: 10%; animation-delay: 0s;"></div>
+        <div class="circle" style="width: 150px; height: 150px; top: 70%; left: 80%; animation-delay: -2s;"></div>
+        <div class="circle" style="width: 80px; height: 80px; top: 40%; left: 60%; animation-delay: -4s;"></div>
+    </div>
+
+    <svg class="ribbon" width="100%" height="100%" style="position: fixed; top: 0; left: 0;">
+        <path class="ribbon-path" d="M -100 0 Q 0 100, 100 0 Q 200 -100, 300 0" style="animation-delay: 0s;"></path>
+        <path class="ribbon-path" d="M -100 0 Q 0 -100, 100 0 Q 200 100, 300 0" style="animation-delay: -5s;"></path>
+        <path class="ribbon-path" d="M -100 50 Q 0 150, 100 50 Q 200 -50, 300 50" style="animation-delay: -10s;"></path>
+    </svg>
+
+    <div class="smoke-container" id="smokeContainer"></div>
+
+    <div class="congratulation-text" id="congratsText">
+        🎉 Welcome! Login Successful! 🎉
+    </div>
+
+    <div class="confetti" id="confettiContainer"></div>
+
+    <svg class="happy-cat" width="100" height="100" viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="40" fill="#ffd1dc"/>
+        <circle cx="35" cy="45" r="5" fill="#000"/> 
+        <circle cx="65" cy="45" r="5" fill="#000"/> 
+        <path d="M 45 55 Q 50 60 55 55" stroke="#000" stroke-width="2" fill="none"/> 
+        <path d="M 30 30 L 20 20" stroke="#000" stroke-width="2"/> 
+        <path d="M 30 35 L 20 35" stroke="#000" stroke-width="2"/> 
+        <path d="M 70 30 L 80 20" stroke="#000" stroke-width="2"/> 
+        <path d="M 70 35 L 80 35" stroke="#000" stroke-width="2"/> 
+        <path d="M 30 10 L 45 30 L 55 30 L 70 10" fill="#ffd1dc"/> 
+    </svg>
+
+    <div class="login-container">
+        <div class="logo">
+            <svg width="80" height="80" viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="45" fill="none" stroke="#ffb6c1" stroke-width="8"/>
+                <path d="M 50 25 Q 25 50 50 75 Q 75 50 50 25" fill="#ffd1dc"/>
+            </svg>
+        </div>
+
+        <form id="loginForm" onsubmit="handleSubmit(event)">
+            <div class="form-group">
+                <input type="email" id="email" placeholder=" " required>
+                <label for="email">Email</label>
+            </div>
+
+            <div class="form-group">
+                <input type="password" id="password" placeholder=" " required>
+                <label for="password">Password</label>
+            </div>
+
+            <button type="submit" class="submit-btn">Sign In</button>
+        </form>
+
+        <div class="links">
+            <a href="https://example.com/forgot-password">Forgot Password?</a>
+            <a href="https://example.com/signup">Sign Up</a>
+        </div>
+    </div>
+
+    <script>
+        function handleSubmit(event) {
+            event.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            console.log('Login attempt:', { email, password });
+            
+            const button = event.target.querySelector('.submit-btn');
+            button.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                button.style.transform = '';
+            }, 200);
+            
+            setTimeout(() => {
+                const cat = document.querySelector('.happy-cat');
+                const congratsText = document.getElementById('congratsText');
+                cat.style.bottom = '100px';
+                cat.classList.add('show');
+                congratsText.classList.add('show');
+                createConfetti();
+                setInterval(createConfetti, 2000);
+                setTimeout(() => {
+                    congratsText.classList.remove('show');
+                }, 5000);
+            }, 1000);
+        }
+
+        function createConfetti() {
+            const container = document.getElementById('confettiContainer');
+            const colors = ['#ffb6c1', '#ffd1dc', '#ff69b4', '#fff'];
+            
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti-piece';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animation = `confettiFall ${Math.random() * 3 + 2}s linear forwards`;
+                confetti.style.animationDelay = Math.random() * 2 + 's';
+                container.appendChild(confetti);
+                
+                setTimeout(() => {
+                    confetti.remove();
+                }, 5000);
+            }
+        }
+
+        function createFloatingCircles() {
+            const container = document.querySelector('.floating-circles');
+            for (let i = 0; i < 5; i++) {
+                const circle = document.createElement('div');
+                circle.className = 'circle';
+                circle.style.width = Math.random() * 100 + 50 + 'px';
+                circle.style.height = circle.style.width;
+                circle.style.left = Math.random() * 100 + '%';
+                circle.style.top = Math.random() * 100 + '%';
+                circle.style.animationDelay = -Math.random() * 6 + 's';
+                container.appendChild(circle);
+            }
+        }
+
+        function createSmokeLines() {
+            const container = document.getElementById('smokeContainer');
+            for (let i = 0; i < 20; i++) {
+                const smokeLine = document.createElement('div');
+                smokeLine.className = 'smoke-line';
+                smokeLine.style.left = Math.random() * 100 + '%';
+                smokeLine.style.animationDelay = Math.random() * 5 + 's';
+                container.appendChild(smokeLine);
+            }
+        }
+
+        function createFlyingRibbons() {
+            const svg = document.querySelector('.ribbon');
+            for (let i = 0; i < 5; i++) {
+                const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                path.setAttribute('class', 'ribbon-path');
+                path.setAttribute('d', `M -100 ${Math.random() * 100} Q ${Math.random() * 100} ${Math.random() * 200}, 
+                    ${100 + Math.random() * 100} ${Math.random() * 100} Q ${200 + Math.random() * 100} ${Math.random() * 200}, 
+                    ${300 + Math.random() * 100} ${Math.random() * 100}`);
+                path.style.animationDelay = `-${Math.random() * 15}s`;
+                svg.appendChild(path);
+            }
+        }
+
+        createFloatingCircles();
+        createSmokeLines();
+        createFlyingRibbons();
+    </script>
+</body></html>
